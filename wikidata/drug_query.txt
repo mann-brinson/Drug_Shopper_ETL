@@ -1,0 +1,14 @@
+SELECT ?drug ?drugLabel ?pharm_productLabel ?med_conditionLabel ?drug2Label ?atc_codeLabel ?drugbank_id
+WHERE
+{
+  ?drug wdt:P31 wd:Q12140 . #medicine
+  ?drug wdt:P715 ?drugbank_id . #drugbank id
+  ?drug wdt:P2175 ?med_condition . #med_condition_treated: can be symptom or disease
+  
+  OPTIONAL { ?drug wdt:P3780 ?pharm_product} . #active_ingredient_in: sometimes null
+  OPTIONAL { ?drug wdt:P769 ?drug2} . #significant_drug_interaction: can be medication or chemical, sometimes null
+  OPTIONAL { ?drug wdt:P267 ?atc_code} . #atc code, will be used for joins with other external DBs
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "en" .
+  }
+}
